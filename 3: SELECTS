@@ -1,0 +1,29 @@
+-- Ver clientes
+SELECT * FROM isaac.cliente;
+
+-- Citas con clientes
+SELECT c.id_cita, cl.nombre, cl.apellido, c.fecha_cita
+FROM isaac.cita c
+JOIN isaac.cliente cl ON c.id_cliente = cl.id_cliente;
+
+-- Clientes entre enero y marzo
+SELECT DISTINCT cl.nombre, cl.apellido, c.fecha_cita
+FROM isaac.cita c
+JOIN isaac.cliente cl ON c.id_cliente = cl.id_cliente
+WHERE c.fecha_cita BETWEEN '2025-01-01' AND '2025-03-31';
+
+-- Servicios más usados
+SELECT s.nombre_servicio, COUNT(*) AS total
+FROM isaac.cita c
+JOIN isaac.servicio s ON c.id_servicio = s.id_servicio
+GROUP BY s.nombre_servicio;
+
+-- Total ingresos
+SELECT SUM(subtotal) AS total_ingresos
+FROM isaac.detalle_cita;
+
+-- Citas por empleado
+SELECT e.nombre, e.apellido, COUNT(*) AS total_citas
+FROM isaac.cita c
+JOIN isaac.empleado e ON c.id_empleado = e.id_empleado
+GROUP BY e.nombre, e.apellido;
