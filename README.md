@@ -19,3 +19,8 @@ El sistema modela la base de datos de una barbería, permitiendo gestionar clien
 /diagramas
 └── modelo_entidad_relacion.drawio
 README.md
+## Ejecución del proyecto
+
+1. Crear el schema y las tablas ejecutando el archivo `TABLAS.sql`
+2. Insertar los datos usando `Inserts.sql`
+3. Ejecutar las consultas desde `SELECTS.sql`
