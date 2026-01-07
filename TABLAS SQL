@@ -1,8 +1,8 @@
 ##PROYECTO
-CREATE SCHEMA isaac;
-SET search_path TO isaac;
-
-CREATE TABLE cliente (
+CREATE SCHEMA Imatamoros;
+SET search_path TO Imatamoros;
+drop schema
+CREATE TABLE Imatamoros.cliente (
     id_cliente SERIAL PRIMARY KEY,
     tipo_identificacion VARCHAR(20) NOT NULL,
     identificacion VARCHAR(20) UNIQUE NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE cliente (
 );
 
 
-CREATE TABLE empleado (
+CREATE TABLE Imatamoros.empleado (
     id_empleado SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE empleado (
 );
 
 
-CREATE TABLE servicio (
+CREATE TABLE Imatamoros.servicio (
     id_servicio SERIAL PRIMARY KEY,
     nombre_servicio VARCHAR(100) NOT NULL,
     descripcion TEXT,
@@ -38,7 +38,7 @@ CREATE TABLE servicio (
 );
 
 
-CREATE TABLE cita (
+CREATE TABLE Imatamoros.cita (
     id_cita SERIAL PRIMARY KEY,
     fecha_cita DATE NOT NULL,
     estado VARCHAR(30),
@@ -52,7 +52,7 @@ CREATE TABLE cita (
 );
 
 
-CREATE TABLE detalle_cita (
+CREATE TABLE Imatamoros.detalle_cita (
     id_detalle_cita SERIAL PRIMARY KEY,
     id_cita INT NOT NULL,
     id_servicio INT NOT NULL,
@@ -64,3 +64,4 @@ CREATE TABLE detalle_cita (
     CONSTRAINT fk_servicio
         FOREIGN KEY (id_servicio) REFERENCES servicio(id_servicio)
 );
+
