@@ -1,4 +1,4 @@
-INSERT INTO cliente
+INSERT INTO Imatamoros.cliente
 (tipo_identificacion, identificacion, nombre, apellido, telefono, email, direccion)
 VALUES
 ('CEDULA','0100000001','Juan','Perez','0991000001','juan01@gmail.com','Centro'),
@@ -33,7 +33,7 @@ VALUES
 ('CEDULA','0100000030','Hector','Luna','0991000030','hector30@gmail.com','Sur');
 
 
-INSERT INTO empleado (nombre, apellido, telefono, especialidad)
+INSERT INTO Imatamoros.empleado (nombre, apellido, telefono, especialidad)
 VALUES
 ('Miguel','Torres','0982000001','Fade'),
 ('Andres','Vega','0982000002','Corte Clasico'),
@@ -47,7 +47,7 @@ VALUES
 ('Alex','Castro','0982000010','Fade');
 
 
-INSERT INTO servicio (nombre_servicio, descripcion, duracion_minutos, precio)
+INSERT INTO Imatamoros.servicio (nombre_servicio, descripcion, duracion_minutos, precio)
 VALUES
 ('Corte Clasico','Corte tradicional',30,5.00),
 ('Fade','Degradado moderno',40,7.00),
@@ -61,15 +61,15 @@ VALUES
 ('Premium','Servicio premium',70,20.00);
 
 
-INSERT INTO cita (fecha_cita, estado, id_cliente, id_empleado)
+INSERT INTO Imatamoros.cita (fecha_cita, estado, id_cliente, id_empleado)
 SELECT 
     DATE '2025-01-01' + g,
     'COMPLETADA',
     g,
     (g % 10) + 1
 FROM generate_series(1,30) g;
-  
-INSERT INTO detalle_cita (id_cita, id_servicio, precio_servicio, cantidad, subtotal)
+
+INSERT INTO Imatamoros.detalle_cita (id_cita, id_servicio, precio_servicio, cantidad, subtotal)
 SELECT
     g,
     (g % 10) + 1,
