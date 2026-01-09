@@ -23,8 +23,4 @@ README.md
 
 1. Crear el schema y las tablas ejecutando el archivo `TABLAS.sql`
 2. Insertar los datos usando `Inserts.sql`
-3. Ejecutar las consultas desde `SELECTS.sql`
 
-4. ## Modelo de Base de Datos
-
-![Modelo de Base de Datos](docs/modelo_BD.PNG)
