@@ -1,0 +1,101 @@
+WITH consumo_cliente AS (
+    SELECT
+        c.id_cliente,
+        c.nombre,
+        c.apellido,
+        c.email,
+        SUM(dc.subtotal) AS total_gastado
+    FROM imatamoros.cliente c
+    JOIN imatamoros.cita ci ON ci.id_cliente = c.id_cliente
+    JOIN imatamoros.detalle_cita dc ON dc.id_cita = ci.id_cita
+    GROUP BY c.id_cliente, c.nombre, c.apellido, c.email
+)
+SELECT
+    nombre,
+    apellido,
+    email,
+    total_gastado
+FROM consumo_cliente
+ORDER BY total_gastado DESC
+LIMIT 5;
+
+
+
+SELECT
+    s.id_servicio,
+    s.nombre AS servicio,
+    COUNT(dc.id_detalle_cita) AS atenciones,
+    SUM(dc.subtotal) AS ingreso_total,
+    RANK() OVER (ORDER BY COUNT(dc.id_detalle_cita) DESC) AS ranking_demanda,
+    RANK() OVER (ORDER BY SUM(dc.subtotal) DESC) AS ranking_ingreso
+FROM imatamoros.servicio s
+JOIN imatamoros.detalle_cita dc ON dc.id_servicio = s.id_servicio
+GROUP BY s.id_servicio, s.nombre
+ORDER BY atenciones DESC;
+
+
+
+
+SELECT
+    e.id_empleado,
+    e.nombre,
+    e.apellido,
+    COUNT(DISTINCT ci.id_cita) AS citas_atendidas,
+    SUM(dc.subtotal) AS total_generado,
+    AVG(dc.subtotal) AS ingreso_promedio
+FROM imatamoros.empleado e
+JOIN imatamoros.cita ci ON ci.id_empleado = e.id_empleado
+JOIN imatamoros.detalle_cita dc ON dc.id_cita = ci.id_cita
+WHERE ci.estado = 'Atendida'
+GROUP BY e.id_empleado, e.nombre, e.apellido
+ORDER BY total_generado DESC;
+
+
+
+WITH resumen_cita AS (
+    SELECT
+        ci.id_cita,
+        DATE_TRUNC('month', ci.fecha) AS mes,
+        ci.estado,
+        COALESCE(SUM(dc.subtotal), 0) AS total_cita
+    FROM imatamoros.cita ci
+    LEFT JOIN imatamoros.detalle_cita dc
+        ON dc.id_cita = ci.id_cita
+    GROUP BY ci.id_cita, mes, ci.estado
+)
+SELECT
+    mes,
+    COUNT(*) AS citas_programadas,
+    COUNT(*) FILTER (WHERE estado = 'Atendida') AS citas_atendidas,
+    ROUND(
+        COUNT(*) FILTER (WHERE estado = 'Atendida') * 100.0 / COUNT(*),
+        2
+    ) AS porcentaje_conversion,
+    AVG(total_cita) FILTER (WHERE estado = 'Atendida') AS ticket_promedio
+FROM resumen_cita
+GROUP BY mes
+ORDER BY mes;
+
+
+
+
+SELECT
+    id_detalle_cita,
+    id_cita,
+    cantidad,
+    precio,
+    subtotal,
+    (cantidad * precio) AS subtotal_calculado
+FROM imatamoros.detalle_cita
+WHERE subtotal <> (cantidad * precio);
+
+
+
+
+SELECT
+    id_cita,
+    SUM(subtotal) AS subtotal_guardado,
+    SUM(cantidad * precio) AS subtotal_calculado
+FROM imatamoros.detalle_cita
+GROUP BY id_cita
+HAVING SUM(subtotal) <> SUM(cantidad * precio);
